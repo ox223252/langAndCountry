@@ -1,0 +1,8 @@
+{
+	"fr":{"name":"Français"},
+	"es":{"name":"Español"},
+	"en":{"name":"English"},
+	"ar":{"name":"العربية","style":{"textAlign":"right"}},
+	"ru":{"name":"Pусский"},
+	"ch":{"name":"中国人"}
+}
