@@ -59,6 +59,11 @@ class Translate {
 					}
 					for ( let o of ret )
 					{
+						if ( ( undefined != params.only )
+							&& !params.only.includes ( o.v ) )
+						{
+							continue;
+						}
 						let child = document.createElement ( "option" );
 						child.className = params.prefix+"_"+l;
 						child.innerHTML = o.t;
@@ -82,7 +87,6 @@ class Translate {
 					let child = document.createElement ( params.domEl || "span" );
 					child.className = params.prefix+"_"+l;
 					child.innerHTML = ret.t || ret;
-					console.log ( ret.options )
 					if ( undefined != ret.options )
 					{
 						Object.assign ( child, ret.options );
