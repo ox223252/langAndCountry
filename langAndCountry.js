@@ -137,9 +137,14 @@ class Selector {
 		}
 
 		let err = getErrorObject();
-		let fileName = err.stack.split("\n")[0];
+		let array = err.stack.toString( ).split ( "\n" );
+		let fileName = array[0];
+		if ( -1 >= array[ 0 ].indexOf ( "getErrorObject" ) )
+		{
+			fileName = array[ 1 ];
+		}
 
-		fileName = fileName.substring ( fileName.indexOf ( "@" )+1 )
+		fileName = fileName.substring ( fileName.search ( /@|\(/ ) + 1 )
 		fileName = fileName.substring ( 0, fileName.lastIndexOf ( ":" ) );
 		fileName = fileName.substring ( 0, fileName.lastIndexOf ( ":" ) );
 		let path = fileName.substring ( 0, fileName.lastIndexOf ( "/" ) + 1 );
