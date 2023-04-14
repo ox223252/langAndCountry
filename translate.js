@@ -102,7 +102,6 @@ class Translate {
 					{
 						let subChild = document.createElement ( params.domEl || "span" );
 						subChild.classList.add ( "class_"+params.textId );
-						console.log ( o );
 						subChild.classList.add ( "class_"+o.v );
 						subChild.innerHTML = o.f || o.t;
 						if ( undefined != o.options )
