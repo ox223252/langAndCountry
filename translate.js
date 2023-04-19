@@ -1,30 +1,23 @@
 "use strict";
 
 class Translate {
-	constructor ( className, dataJson, options )
+	style = {};
+	constructor ( className, dataJson, options = {} )
 	{
 		this.data = dataJson;
+		this.className = className;
+		this.options = options;
 
-		let els = document.getElementsByClassName ( className );
-
-		function setStyle ( mainId, sub )
+		if ( this.options.wait )
 		{
-			let style = document.getElementById ( "style_"+mainId );
-			if ( undefined == style )
-			{
-				style = document.createElement ( "style" );
-				style.id = "style_"+mainId;
-				document.head.appendChild ( style );
-			}
-
-			style.innerHTML = "";
-			style.innerHTML += '.class_'+mainId+'{display:none}\n'
-			if ( undefined != sub )
-			{
-				style.innerHTML += '.class_'+mainId+'.class_'+sub+'{display:initial}\n'
-			}
-			return style;
+			return;
 		}
+		this.update ( );
+	}
+
+	update ( )
+	{
+		let els = document.getElementsByClassName ( this.className );
 
 		for ( let el of els )
 		{
@@ -35,11 +28,17 @@ class Translate {
 				continue;
 			}
 
+			if ( true == el.translated )
+			{
+				continue;
+			}
+			el.translated = true;
+
 			params = JSON.parse ( params );
 
 			if ( undefined == params.prefix )
 			{
-				params.prefix = options.prefix;
+				params.prefix = this.options.prefix;
 			}
 
 			while ( undefined != el.firstChild )
@@ -76,7 +75,7 @@ class Translate {
 						el.appendChild ( child );
 					}
 
-					setStyle ( params.textId );
+					this._setStyle ( params.textId );
 				}
 				else if ( ( "string" == typeof ret ) 
 					|| ( undefined == ret.length ) )
@@ -116,10 +115,28 @@ class Translate {
 
 			if ( "select" == el.tagName.toLowerCase() )
 			{
-				el.addEventListener ( "change", (ev)=>{setStyle ( params.textId, ev.target.value );} );
+				el.addEventListener ( "change", (ev)=>{this._setStyle ( params.textId, ev.target.value );} );
 				el.dispatchEvent ( new Event( "change" ) );
 			}
 		}
+	}
+
+	_setStyle ( mainId, sub )
+	{
+		if ( undefined == this.style[ mainId ] )
+		{
+			this.style[ mainId ] = document.createElement ( "style" );
+			this.style[ mainId ].id = "style_"+mainId;
+			document.head.appendChild ( this.style[ mainId ] );
+		}
+
+		this.style[ mainId ].innerHTML = "";
+		this.style[ mainId ].innerHTML += '.class_'+mainId+'{display:none}\n'
+		if ( undefined != sub )
+		{
+			this.style[ mainId ].innerHTML += '.class_'+mainId+'.class_'+sub+'{display:initial}\n'
+		}
+		return this.style[ mainId ];
 	}
 
 	_getFileName ( )
