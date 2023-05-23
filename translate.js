@@ -135,6 +135,7 @@ class Translate {
 		if ( undefined != sub )
 		{
 			this.style[ mainId ].innerHTML += '.class_'+mainId+'.class_'+sub+'{display:initial}\n'
+			this.style[ mainId ].innerHTML += 'td.class_'+mainId+'.class_'+sub+'{display:table-cell}\n'
 		}
 		return this.style[ mainId ];
 	}
