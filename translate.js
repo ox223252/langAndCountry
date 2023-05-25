@@ -34,7 +34,9 @@ class Translate {
 			}
 			el.translated = true;
 
-			params = JSON.parse ( params );
+			try{
+				params = JSON.parse ( params );
+			}catch(e){console.error( "JSON format error :",el,params);continue;}
 
 			if ( undefined == params.prefix )
 			{
