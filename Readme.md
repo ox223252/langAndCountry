@@ -53,7 +53,7 @@ let l = new LangSelector ( {
 ## source:
 Flags are provided by : [drapeauxdespays](https://www.drapeauxdespays.fr/telecharger/vectorielles) fully free even for comercial use :)
 
-# lanfg and translations
+# lang and translations
 
 ```html
 <span id="lang_1"></span>
@@ -126,7 +126,7 @@ its a big object with each lang and for each lang the text ID.
 ## select
 
 ```html
-<select class="translate" data-translate='{"textId":"id_text2","prefix":"lang"}'></select>
+<select class="translate" data-translate='{"textId":"id_text2","prefix":"lang","default":"2"}'></select>
 
 <div class="translate" data-translate='{"textId":"id_text2","prefix":"lang"}'></div>
 ```

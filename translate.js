@@ -117,6 +117,11 @@ class Translate {
 
 			if ( "select" == el.tagName.toLowerCase() )
 			{
+				if ( undefined != params.default )
+				{
+					el.value = params.default;
+				}
+
 				el.addEventListener ( "change", (ev)=>{this._setStyle ( params.textId, ev.target.value );} );
 				el.dispatchEvent ( new Event( "change" ) );
 			}
