@@ -152,6 +152,21 @@ class Selector {
 
 		return {path:path, file:fileName};
 	}
+
+	get value ( )
+	{
+		return this.params.current;
+	}
+
+	set value ( lang )
+	{
+		if ( this.params.list.includes ( lang ) )
+		{
+			this.params.current = lang;
+			this._setStyle ( );
+			this._updateDsiplay ( );
+		}
+	}
 }
 
 class CountrySelector extends Selector {
