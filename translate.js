@@ -190,6 +190,36 @@ class Translate {
 		return this.data[ lang ][ id ];
 	}
 
+	getText ( id, lang )
+	{
+		function toString ( obj )
+		{
+			if ( obj.length > 0 )
+			{
+				return obj.map(o=>o.t).join("\n");
+			}
+			else
+			{
+				return obj.t
+			}
+		}
+
+		if ( lang )
+		{
+			return toString ( this._getText ( id, lang ) );
+		}
+		else
+		{
+			let ret = {};
+			for ( let l of this.langs )
+			{
+				ret[ l ] = toString ( this._getText ( id, l ) );
+			}
+			return ret;
+		}
+
+	}
+
 	get langs ( )
 	{
 		return Object.keys ( this.data );
