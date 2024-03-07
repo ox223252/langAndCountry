@@ -104,7 +104,15 @@ class Translate {
 						let subChild = document.createElement ( params.domEl || "span" );
 						subChild.classList.add ( "class_"+params.textId );
 						subChild.classList.add ( "class_"+o.v );
-						subChild.innerHTML = o.f || o.t;
+						if ( params.display
+							&& o[ params.display ] )
+						{
+							subChild.innerHTML = o[ params.display ];
+						}
+						else
+						{
+							subChild.innerHTML = o.f || o.t;
+						}
 						if ( undefined != o.options )
 						{
 							Object.assign ( subChild, o.options );
@@ -217,7 +225,6 @@ class Translate {
 			}
 			return ret;
 		}
-
 	}
 
 	get langs ( )
