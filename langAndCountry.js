@@ -44,8 +44,6 @@ class Selector {
 
 				for ( let item of this.params.list )
 				{
-					let id = this.params.name + '_' + item;
-
 					this.label[ item ] = document.createElement ( "label" );
 					this.label[ item ].innerHTML = item;
 					this.label[ item ].style.width = "100%";
@@ -118,6 +116,8 @@ class Selector {
 
 		this._setStyle ( );
 		this._updateDsiplay ( );
+
+		this.domEl.dispatchEvent ( new Event ( "change" ) );
 	}
 
 	_updateDsiplay ( )
@@ -166,6 +166,11 @@ class Selector {
 			this._setStyle ( );
 			this._updateDsiplay ( );
 		}
+	}
+
+	get domEl ( )
+	{
+		return this.params.target
 	}
 }
 
