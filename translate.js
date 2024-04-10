@@ -87,7 +87,7 @@ class Translate {
 
 					let child = document.createElement ( params.domEl || "span" );
 					child.className = params.prefix+"_"+l;
-					child.innerHTML = ret.t || ret;
+					child.innerHTML = ret.f || ret.t || ret;
 					if ( undefined != ret.options )
 					{
 						Object.assign ( child, ret.options );
@@ -180,18 +180,11 @@ class Translate {
 
 	_getText ( id=undefined, lang )
 	{
-		if ( id == undefined )
+		if ( ( id == undefined )
+			|| ( this.data[ lang ] == undefined )
+			|| ( this.data[ lang ][ id ] == undefined ) )
 		{
-			return {"t":"TODO"}
-		}
-
-		if ( this.data[ lang ] == undefined )
-		{
-			return {"t":"TODO"}
-		}
-
-		if ( this.data[ lang ][ id ] == undefined )
-		{
+			console.debug ( "miss text : "+lang+" / "+id)
 			return {"t":"TODO"}
 		}
 
