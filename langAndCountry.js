@@ -170,7 +170,12 @@ class Selector {
 
 	get domEl ( )
 	{
-		return this.params.target
+		return this.params.target;
+	}
+
+	get name ( )
+	{
+		return this.params.name;
 	}
 }
 

@@ -231,4 +231,9 @@ class Translate {
 	{
 		return Object.keys ( this.data );
 	}
+
+	get prefix ( )
+	{
+		return this.options.prefix;
+	}
 }
