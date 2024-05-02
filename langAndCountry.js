@@ -27,12 +27,24 @@ class Selector {
 				let eventMnger = (ev)=>{popup.style.display = (ev.type=="mouseenter")?"flex":"none";};
 
 				let popup = document.createElement ( "div" );
+				switch ( this.params?.classList?.constructor.name )
+				{
+					case "Array":
+					{
+						this.params.classList.map( c=>popup.classList.add ( c ) );
+						break;
+					}
+					case "String":
+					{
+						popup.classList.add ( this.params.classList );
+						break;
+					}
+				}
 				popup.style.display = "none";
 				popup.style.position = "absolute";
 				popup.style.flexDirection = "column";
-				popup.style.backgroundColor = "white";
 				popup.style.padding = "10px";
-				popup.style.border = "solid 1px black";
+				popup.style.border = "solid 1px";
 				popup.style.borderRadius = "7px";
 				if ( undefined != this.params.style )
 				{
