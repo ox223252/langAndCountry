@@ -78,7 +78,18 @@ let l = new LangSelector ( {
 	current:"ar",
 	name:"lang",
 	type:"popup",
-	style:{"backgroundColor":"grey"}
+	style:{"backgroundColor":"grey"},
+	logo:{
+		display: true,
+		style:{
+			maxWidth: "1em",
+			maxHeight: "1em",
+			fill: "black",
+			stroke: "black",
+			strokeWidth: "1",
+			marginRight: "10px"
+		}
+	}
 })
 ```
 

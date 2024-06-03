@@ -201,16 +201,8 @@ class LangSelector extends Selector {
 
 		let path = this._getFileName ( ).path;
 
-		async function loadData ( path )
-		{
-			return new Promise ((ok,ko)=>{
-				fetch ( path )
-					.then(r=>r.json())
-					.then(ok)
-			});
-		}
-
-		loadData ( path + "langs.json" )
+		fetch ( path + "langs.json" )
+			.then(r=>r.json())
 			.then((d)=>{
 				for ( let item in this.label )
 				{
@@ -224,17 +216,25 @@ class LangSelector extends Selector {
 				this._updateDsiplay ( );
 			});
 
-		if ( undefined == this.params.logoSize )
-		{
-			this.params.logoSize = 20;
+		if ( this.params.logo?.display == false )
+		{ // don't display trad logo
 		}
+		else fetch ( path+"lang.svg" )
+			.then(r=>r.text())
+			.then(t=>{
+				let svg = new DOMParser().parseFromString(t, 'text/html').querySelector('svg');
+				this.show.prepend ( svg );
 
-		this.show.style.backgroundImage = "url(\""+path+"lang.png\")";
-		this.show.style.backgroundSize = (this.params.logoSize*0.75) + 'px';
-		this.show.style.backgroundPositionX = "left";
-		this.show.style.backgroundPositionY = "top";
-		this.show.style.backgroundColor = "transparent";
-		this.show.style.backgroundRepeat = "no-repeat";
-		this.show.style.paddingLeft = this.params.logoSize + "px";
+				Object.assign ( svg.style, {
+					maxWidth: "1em",
+					maxHeight: "1em",
+					fill: "black",
+					stroke: "black",
+					strokeWidth: "1",
+					marginRight: "10px",
+				});
+
+				Object.assign ( svg.style, this.params.logo?.style );
+			})
 	}
 }
