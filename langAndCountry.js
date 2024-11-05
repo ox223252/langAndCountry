@@ -56,8 +56,6 @@ class Selector {
 
 				for ( let item of this.params.list )
 				{
-					let id = this.params.name + '_' + item;
-
 					this.label[ item ] = document.createElement ( "label" );
 					this.label[ item ].innerHTML = item;
 					this.label[ item ].style.width = "100%";
@@ -130,6 +128,8 @@ class Selector {
 
 		this._setStyle ( );
 		this._updateDsiplay ( );
+
+		this.domEl.dispatchEvent ( new Event ( "change" ) );
 	}
 
 	_updateDsiplay ( )
@@ -163,6 +163,31 @@ class Selector {
 		fileName = fileName.substring ( fileName.lastIndexOf ( "/" ) + 1 );
 
 		return {path:path, file:fileName};
+	}
+
+	get value ( )
+	{
+		return this.params.current;
+	}
+
+	set value ( lang )
+	{
+		if ( this.params.list.includes ( lang ) )
+		{
+			this.params.current = lang;
+			this._setStyle ( );
+			this._updateDsiplay ( );
+		}
+	}
+
+	get domEl ( )
+	{
+		return this.params.target;
+	}
+
+	get name ( )
+	{
+		return this.params.name;
 	}
 }
 

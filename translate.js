@@ -87,7 +87,7 @@ class Translate {
 
 					let child = document.createElement ( params.domEl || "span" );
 					child.className = params.prefix+"_"+l;
-					child.innerHTML = ret.t || ret;
+					child.innerHTML = ret.f || ret.t || ret;
 					if ( undefined != ret.options )
 					{
 						Object.assign ( child, ret.options );
@@ -104,7 +104,15 @@ class Translate {
 						let subChild = document.createElement ( params.domEl || "span" );
 						subChild.classList.add ( "class_"+params.textId );
 						subChild.classList.add ( "class_"+o.v );
-						subChild.innerHTML = o.f || o.t;
+						if ( params.display
+							&& o[ params.display ] )
+						{
+							subChild.innerHTML = o[ params.display ];
+						}
+						else
+						{
+							subChild.innerHTML = o.f || o.t;
+						}
 						if ( undefined != o.options )
 						{
 							Object.assign ( subChild, o.options );
@@ -172,26 +180,53 @@ class Translate {
 
 	_getText ( id=undefined, lang )
 	{
-		if ( id == undefined )
+		if ( ( id == undefined )
+			|| ( this.data[ lang ] == undefined )
+			|| ( this.data[ lang ][ id ] == undefined ) )
 		{
-			return {"t":"TODO"}
-		}
-
-		if ( this.data[ lang ] == undefined )
-		{
-			return {"t":"TODO"}
-		}
-
-		if ( this.data[ lang ][ id ] == undefined )
-		{
+			console.debug ( "miss text : "+lang+" / "+id)
 			return {"t":"TODO"}
 		}
 
 		return this.data[ lang ][ id ];
 	}
 
+	getText ( id, lang )
+	{
+		function toString ( obj )
+		{
+			if ( obj.length > 0 )
+			{
+				return obj.map(o=>o.t).join("\n");
+			}
+			else
+			{
+				return obj.t
+			}
+		}
+
+		if ( lang )
+		{
+			return toString ( this._getText ( id, lang ) );
+		}
+		else
+		{
+			let ret = {};
+			for ( let l of this.langs )
+			{
+				ret[ l ] = toString ( this._getText ( id, l ) );
+			}
+			return ret;
+		}
+	}
+
 	get langs ( )
 	{
 		return Object.keys ( this.data );
+	}
+
+	get prefix ( )
+	{
+		return this.options.prefix;
 	}
 }
