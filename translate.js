@@ -205,16 +205,38 @@ class Translate {
 			}
 		}
 
+		function parseTexts ( texts )
+		{
+			if ( 1 < texts.length )
+			{
+				let els = [].slice.call ( document.getElementsByTagName ( "select" ) ).filter ( e=>{
+					try
+					{
+						let obj = JSON.parse ( e.dataset.translate );
+						return ( obj.textId == id );
+					}
+					catch ( e )
+					{
+						return false;
+					}
+				});
+
+				return texts.filter ( t=>t.v==els[ 0 ]?.value );
+			}
+
+			return texts;
+		}
+
 		if ( lang )
 		{
-			return toString ( this._getText ( id, lang ) );
+			return toString ( parseTexts ( this._getText ( id, lang ) ) );
 		}
 		else
 		{
 			let ret = {};
 			for ( let l of this.langs )
 			{
-				ret[ l ] = toString ( this._getText ( id, l ) );
+				ret[ l ] = toString ( parseTexts ( this._getText ( id, l ) ) );
 			}
 			return ret;
 		}
