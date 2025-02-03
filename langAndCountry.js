@@ -145,7 +145,7 @@ class Selector {
 	_getFileName ( )
 	{
 		function getErrorObject(){
-		    try { throw Error('') } catch(err) { return err; }
+			try { throw Error('') } catch(err) { return err; }
 		}
 
 		let err = getErrorObject();
