@@ -24,7 +24,11 @@ class Selector {
 			default:
 			case "popup":
 			{
-				let eventMnger = (ev)=>{popup.style.display = (ev.type=="mouseenter")?"flex":"none";};
+				let eventMnger = (ev)=>{
+					let rect = this.params.target.getBoundingClientRect();
+					popup.style.top = rect.bottom+"px"
+					popup.style.display = (ev.type=="mouseenter")?"flex":"none";
+				};
 
 				let popup = document.createElement ( "div" );
 				switch ( this.params?.classList?.constructor.name )
@@ -71,14 +75,10 @@ class Selector {
 				this.show = document.createElement ( "div" );
 				this.show.innerHTML = this.params.current;
 
-				let main = document.createElement ( "div" );
-				main.style.display = "inline-block";
-				main.onmouseenter = eventMnger;
-				main.onmouseleave = eventMnger;
-
-				main.appendChild ( this.show );
-				main.appendChild ( popup );
-				this.params.target.appendChild ( main );
+				this.params.target.appendChild ( this.show );
+				this.params.target.appendChild ( popup );
+				this.params.target.onmouseenter = eventMnger;
+				this.params.target.onmouseleave = eventMnger;
 
 				break;
 			}
@@ -247,19 +247,49 @@ class LangSelector extends Selector {
 		else fetch ( path+"lang.svg" )
 			.then(r=>r.text())
 			.then(t=>{
-				let svg = new DOMParser().parseFromString(t, 'text/html').querySelector('svg');
-				this.show.prepend ( svg );
+				this.svg = new DOMParser().parseFromString(t, 'text/html').querySelector('svg');
 
-				Object.assign ( svg.style, {
-					maxWidth: "1em",
-					maxHeight: "1em",
+				Object.assign ( this.svg.style, {
 					fill: "black",
 					stroke: "black",
 					strokeWidth: "1",
 					marginRight: "10px",
 				});
 
-				Object.assign ( svg.style, this.params.logo?.style );
+				if ( this.params?.logo?.display == "only" )
+				{
+					this.svg.style.maxWidth = "100%";
+					this.svg.style.maxHeight = "100%";
+				}
+				else
+				{
+					this.svg.style.maxWidth = "1em";
+					this.svg.style.maxHeight = "1em";
+				}
+
+				Object.assign ( this.svg.style, this.params.logo?.style );
 			})
+			.then ( ()=>{
+				this._updateDsiplay ( );
+			})
+	}
+
+	_updateDsiplay ( )
+	{
+		while ( this.show.firstChild )
+		{
+			this.show.removeChild ( this.show.lastChild );
+		}
+
+		if ( this.params?.logo?.display != false
+			&& this.svg )
+		{
+			this.show.appendChild ( this.svg );
+		}
+
+		if ( this.params?.logo?.display != "only" )
+		{
+			this.show.appendChild ( this.label[ this.params.current ].cloneNode ( true ) );
+		}
 	}
 }
