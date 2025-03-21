@@ -21,9 +21,7 @@ class Translate {
 
 		for ( let el of els )
 		{
-			let params = el.getAttribute ( "data-translate" );
-
-			if ( undefined == params )
+			if ( !el?.dataset?.translate )
 			{
 				continue;
 			}
@@ -32,16 +30,21 @@ class Translate {
 			{
 				continue;
 			}
-			el.translated = true;
 
+			let params = undefined;
 			try{
-				params = JSON.parse ( params );
-			}catch(e){console.error( "JSON format error :",el,params);continue;}
+				params = JSON.parse ( el?.dataset?.translate );
+			}catch(e){console.error( "JSON format error :",el,el?.dataset?.translate);continue;}
 
-			if ( undefined == params.prefix )
+			if ( !params.prefix )
 			{
 				params.prefix = this.options.prefix;
 			}
+			else if ( params.prefix != this.options.prefix )
+			{
+				continue;
+			}
+			el.translated = true;
 
 			while ( undefined != el.firstChild )
 			{
