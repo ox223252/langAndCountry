@@ -28,9 +28,16 @@ class Selector {
 					let rect = this.params.target.getBoundingClientRect();
 					popup.style.top = rect.bottom+"px"
 					popup.style.display = (ev.type=="mouseenter")?"flex":"none";
+
+					if ( this.params?.popup
+						&& ev.type == "mouseenter" )
+					{
+						this.params.popup.style.left = this.params.target.getBoundingClientRect ( ).left + "px";
+						this.params.popup.style.top = this.params.target.getBoundingClientRect ( ).bottom + "px";
+					}
 				};
 
-				let popup = document.createElement ( "div" );
+				let popup = this.params?.popup || document.createElement ( "div" );
 				switch ( this.params?.classList?.constructor.name )
 				{
 					case "Array":
@@ -76,7 +83,10 @@ class Selector {
 				this.show.innerHTML = this.params.current;
 
 				this.params.target.appendChild ( this.show );
-				this.params.target.appendChild ( popup );
+				if ( !this.params?.popup )
+				{
+					this.params.target.appendChild ( popup );
+				}
 				this.params.target.onmouseenter = eventMnger;
 				this.params.target.onmouseleave = eventMnger;
 
@@ -238,6 +248,8 @@ class LangSelector extends Selector {
 					}
 					Object.assign ( this.label[ item ].style, d[ item ].style );
 				}
+			})
+			.then( ()=>{
 				this._updateDsiplay ( );
 			});
 
@@ -269,9 +281,9 @@ class LangSelector extends Selector {
 
 				Object.assign ( this.svg.style, this.params.logo?.style );
 			})
-			.then ( ()=>{
+			.then( ()=>{
 				this._updateDsiplay ( );
-			})
+			});
 	}
 
 	_updateDsiplay ( )
@@ -279,6 +291,11 @@ class LangSelector extends Selector {
 		while ( this.show.firstChild )
 		{
 			this.show.removeChild ( this.show.lastChild );
+		}
+
+		if ( this.params?.logo?.display == "none" )
+		{
+			return;
 		}
 
 		if ( this.params?.logo?.display != false
