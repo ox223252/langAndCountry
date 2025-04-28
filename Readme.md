@@ -79,8 +79,9 @@ let l = new LangSelector ( {
 	name:"lang",
 	type:"popup",
 	style:{"backgroundColor":"grey"},
+	popup: document.getElementById("popup_div"),
 	logo:{
-		display: true,
+		display: true, // 'only', 'none'
 		style:{
 			maxWidth: "1em",
 			maxHeight: "1em",
