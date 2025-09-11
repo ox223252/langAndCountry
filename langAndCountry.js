@@ -52,7 +52,7 @@ class Selector {
 					}
 				}
 				popup.style.display = "none";
-				popup.style.position = "absolute";
+				popup.style.position = "fixed";
 				popup.style.flexDirection = "column";
 				popup.style.padding = "10px";
 				popup.style.border = "solid 1px";
