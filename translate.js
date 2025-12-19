@@ -55,6 +55,12 @@ class Translate {
 			{
 				let ret = this._getText ( params.textId, l );
 
+				if ( ret.error )
+				{
+					console.log ( ret )
+					el.title = params.textId;
+				}
+
 				if ( "select" == el.tagName.toLowerCase() )
 				{
 					if ( undefined == ret.length )
@@ -188,7 +194,7 @@ class Translate {
 			|| ( this.data[ lang ][ id ] == undefined ) )
 		{
 			console.debug ( "miss text : "+lang+" / "+id)
-			return {"t":"TODO"}
+			return {"t":"TODO","error":true}
 		}
 
 		return this.data[ lang ][ id ];
