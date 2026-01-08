@@ -12,8 +12,14 @@ class Translate {
 		{
 			return;
 		}
+
+		this.log = this.options?.log;
+
 		this.update ( );
 	}
+
+	_log ( )
+	{}
 
 	update ( )
 	{
@@ -57,7 +63,6 @@ class Translate {
 
 				if ( ret.error )
 				{
-					console.log ( ret )
 					el.title = params.textId;
 				}
 
@@ -193,7 +198,7 @@ class Translate {
 			|| ( this.data[ lang ] == undefined )
 			|| ( this.data[ lang ][ id ] == undefined ) )
 		{
-			console.debug ( "miss text : "+lang+" / "+id)
+			this._log ( "miss text : "+lang+" / "+id)
 			return {"t":"TODO","error":true}
 		}
 
@@ -259,5 +264,10 @@ class Translate {
 	get prefix ( )
 	{
 		return this.options.prefix;
+	}
+
+	set log ( value )
+	{
+		this._log = (true==value)?console.log:()=>{};
 	}
 }
