@@ -113,7 +113,7 @@ class Selector {
 				continue;
 			}
 
-			this.style.innerHTML += '.'+id+'{display:none}'
+			this.style.innerHTML += '.'+id+'{display:none !important}'
 		}
 	}
 
