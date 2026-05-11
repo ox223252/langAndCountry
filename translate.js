@@ -12,8 +12,14 @@ class Translate {
 		{
 			return;
 		}
+
+		this.log = this.options?.log;
+
 		this.update ( );
 	}
+
+	_log ( )
+	{}
 
 	update ( )
 	{
@@ -54,6 +60,11 @@ class Translate {
 			for ( let l of this.langs )
 			{
 				let ret = this._getText ( params.textId, l );
+
+				if ( ret.error )
+				{
+					el.title = params.textId;
+				}
 
 				if ( "select" == el.tagName.toLowerCase() )
 				{
@@ -187,8 +198,8 @@ class Translate {
 			|| ( this.data[ lang ] == undefined )
 			|| ( this.data[ lang ][ id ] == undefined ) )
 		{
-			console.debug ( "miss text : "+lang+" / "+id)
-			return {"t":"TODO"}
+			this._log ( "miss text : "+lang+" / "+id)
+			return {"t":"TODO","error":true}
 		}
 
 		return this.data[ lang ][ id ];
@@ -253,5 +264,10 @@ class Translate {
 	get prefix ( )
 	{
 		return this.options.prefix;
+	}
+
+	set log ( value )
+	{
+		this._log = (true==value)?console.log:()=>{};
 	}
 }
