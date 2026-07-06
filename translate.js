@@ -205,7 +205,7 @@ class Translate {
 		return this.data[ lang ][ id ];
 	}
 
-	getText ( id, lang )
+	getText ( id, lang, domEl )
 	{
 		function toString ( obj )
 		{
@@ -219,21 +219,29 @@ class Translate {
 			}
 		}
 
-		function parseTexts ( texts )
+		function parseTexts ( texts, domEl )
 		{
 			if ( 1 < texts.length )
 			{
-				let els = [].slice.call ( document.getElementsByTagName ( "select" ) ).filter ( e=>{
-					try
-					{
-						let obj = JSON.parse ( e.dataset.translate );
-						return ( obj.textId == id );
-					}
-					catch ( e )
-					{
-						return false;
-					}
-				});
+				let els = [];
+				if ( domEl )
+				{
+					els.push ( domEl );
+				}
+				else
+				{
+					els = [].slice.call ( document.getElementsByTagName ( "select" ) ).filter ( e=>{
+						try
+						{
+							let obj = JSON.parse ( e.dataset.translate );
+							return ( obj.textId == id );
+						}
+						catch ( e )
+						{
+							return false;
+						}
+					});
+				}
 
 				return texts.filter ( t=>t.v==els[ 0 ]?.value );
 			}
@@ -243,14 +251,14 @@ class Translate {
 
 		if ( lang )
 		{
-			return toString ( parseTexts ( this._getText ( id, lang ) ) );
+			return toString ( parseTexts ( this._getText ( id, lang ), domEl ) );
 		}
 		else
 		{
 			let ret = {};
 			for ( let l of this.langs )
 			{
-				ret[ l ] = toString ( parseTexts ( this._getText ( id, l ) ) );
+				ret[ l ] = toString ( parseTexts ( this._getText ( id, l ), domEl ) );
 			}
 			return ret;
 		}
