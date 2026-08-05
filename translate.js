@@ -278,4 +278,18 @@ class Translate {
 	{
 		this._log = (true==value)?console.log:()=>{};
 	}
+
+	setDefault ( dom, value )
+	{
+		try
+		{
+			let tmp = JSON.parse ( dom.dataset.translate );
+			tmp.default = value;
+			dom.dataset.translate = JSON.stringify ( tmp );
+		}
+		catch ( e )
+		{
+			console.error ( e );
+		}
+	}
 }
