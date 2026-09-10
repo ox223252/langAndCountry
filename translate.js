@@ -209,7 +209,11 @@ class Translate {
 	{
 		function toString ( obj )
 		{
-			if ( obj.length > 0 )
+			if ( "String" == obj.constructor.name )
+			{
+				return obj
+			}
+			else if ( obj.length > 0 )
 			{
 				return obj.map(o=>o.t).join("\n");
 			}
@@ -221,7 +225,8 @@ class Translate {
 
 		function parseTexts ( texts, domEl )
 		{
-			if ( 1 < texts.length )
+			if ( ( "Array" == texts?.constructor.name )
+				&& ( 1 < texts.length ) )
 			{
 				let els = [];
 				if ( domEl )
