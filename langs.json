@@ -1,8 +1,9 @@
 {
-	"fr":{"name":"Français"},
+	"ar":{"name":"العربية","style":{"textAlign":"right"}},
 	"es":{"name":"Español"},
 	"en":{"name":"English"},
-	"ar":{"name":"العربية","style":{"textAlign":"right"}},
+	"fr":{"name":"Français"},
+	"pt":{"name":"português"},
 	"ru":{"name":"Pусский"},
-	"ch":{"name":"中国人"}
+	"zh":{"name":"中国人"}
 }
