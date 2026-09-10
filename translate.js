@@ -2,7 +2,9 @@
 
 class Translate {
 	style = {};
-	constructor ( className, dataJson, options = {} )
+	#selectors = [];
+
+	constructor ( className, dataJson, options = {},  )
 	{
 		this.data = dataJson;
 		this.className = className;
@@ -16,6 +18,15 @@ class Translate {
 		this.log = this.options?.log;
 
 		this.update ( );
+
+		if ( this.options?.selector )
+		{
+			this.options?.selector?.domEl?.addEventListener ( "change", ( ev )=>{
+				this.update_selector ( );
+			});
+
+			this.update_selector ( );
+		}
 	}
 
 	_log ( )
@@ -83,7 +94,7 @@ class Translate {
 						child.className = params.prefix+"_"+l;
 						child.innerHTML = o.t;
 						child.value = o.v;
-						child.setAttribute ( "data-translate-select", JSON.stringify ({lang:l}) );
+						child.setAttribute ( "data-translate-select", l );
 						if ( undefined != o.options )
 						{
 							Object.assign ( child, o.options );
@@ -139,15 +150,55 @@ class Translate {
 
 			if ( "select" == el.tagName.toLowerCase() )
 			{
+				this.#selectors.push ( el );
+
 				if ( undefined != params.default )
 				{
 					el.value = params.default;
 				}
 
-				el.addEventListener ( "change", (ev)=>{this._setStyle ( params.textId, ev.target.value );} );
+				el.addEventListener ( "change", (ev)=>{
+					this._setStyle ( params.textId, ev.target.value );
+
+					if ( !this.options.selector.params.current )
+					{
+						return;
+					}
+					
+					let i = el.options.selectedIndex;
+
+					if ( el.options[ i ].dataset.translateSelect == this.options.selector.params.current )
+					{
+						return;
+					}
+					
+					// selection par du js et c'est pas la bonne langue, donc on la reconfigure
+					this._setSelectRightLang ( el, this.options.selector.params.current );
+				});
 				el.dispatchEvent ( new Event( "change" ) );
 			}
 		}
+	}
+
+	update_selector ( l = this.options.selector.params.current ?? "en" )
+	{
+		this.#selectors.map ( s=>this._setSelectRightLang ( s, l ) )
+	}
+
+	_setSelectRightLang ( selector, lang )
+	{
+		[ ...selector.options ].filter( o=>{
+				try
+				{
+					return lang == o.dataset.translateSelect;
+				}
+				catch ( e )
+				{
+					return false;
+				}
+			})
+			.filter ( o=>o.value == selector.value )
+			.map ( o=>o.selected = true );
 	}
 
 	_setStyle ( mainId, sub )
