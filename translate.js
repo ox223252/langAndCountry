@@ -160,7 +160,7 @@ class Translate {
 				el.addEventListener ( "change", (ev)=>{
 					this._setStyle ( params.textId, ev.target.value );
 
-					if ( !this.options.selector.params.current )
+					if ( !this.options?.selector?.params?.current )
 					{
 						return;
 					}
